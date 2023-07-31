@@ -5,4 +5,3 @@
 # Python compiled byte-code files
 .pytest_cache/
 __pycache__/
-

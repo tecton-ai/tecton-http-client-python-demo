@@ -4,7 +4,7 @@ from typing import Final
 from demo.demo_client import DemoClient
 
 
-def test_demo_client_get_features() -> None:
+class TestDemoClient:
     url: Final[str] = "https://app.tecton.ai"
     api_key: Final[str] = os.getenv("TECTON_API_KEY")
 
@@ -14,28 +14,55 @@ def test_demo_client_get_features() -> None:
     join_key_map = {"user_id": "user_469998441571"}
     request_context_map = {"amt": 12345678.9, "merch_lat": 30.0, "merch_long": 35.0}
 
-    response = client.get_features(join_key_map=join_key_map, request_context_map=request_context_map)
+    def test_demo_client_get_features(self) -> None:
+        response = self.client.get_features(
+            join_key_map=self.join_key_map, request_context_map=self.request_context_map
+        )
 
-    # Access SLO_INFO information if requested in the test_request
-    print(vars(response.slo_info))
+        # Access SLO_INFO information if requested in the test_request
+        print(vars(response.slo_info))
 
-    # Get a mapping of name and feature value from the feature values in the response
-    print({k: v.feature_value for k, v in response.feature_values.items()})
+        # Get a mapping of name and feature value from the feature values in the response
+        print({k: v.feature_value for k, v in response.feature_values.items()})
 
-    # Print the details of each feature in the response
-    for name, feature in response.feature_values.items():
-        print("--------------------")
-        print("Name in response: ", name)
-        print("Feature Namespace: ", feature.feature_namespace)
-        print("Feature Name: ", feature.feature_name)
-        print("Feature Value: ", feature.feature_value)
+        # Print the details of each feature in the response
+        for name, feature in response.feature_values.items():
+            print("--------------------")
+            print("Name in response: ", name)
+            print("Feature Namespace: ", feature.feature_namespace)
+            print("Feature Name: ", feature.feature_name)
+            print("Feature Value: ", feature.feature_value)
 
-        # Data type of the feature value
-        print("Feature Value Type: ", feature.data_type)
+            # Data type of the feature value
+            print("Feature Value Type: ", feature.data_type)
 
-        # These two fields are only available if requested in the metadata options of the test_request
-        print("Feature Status: ", feature.feature_status)
-        print("Feature Effective Time: ", feature.effective_time)
+            # These two fields are only available if requested in the metadata options of the test_request
+            print("Feature Status: ", feature.feature_status)
+            print("Feature Effective Time: ", feature.effective_time)
 
-    # Always close the created client
-    client.close()
+    def test_demo_client_get_features_batch(self) -> None:
+        batch_response = self.client.get_features_batch(
+            join_key_map=self.join_key_map, request_context_map=self.request_context_map
+        )
+
+        print("")
+        print("---------------------------------------")
+
+        print("Count of responses: ", len(batch_response.batch_response_list))
+        print("Count of None responses: ", batch_response.batch_response_list.count(None))
+
+        print("---------------------------------------")
+        print("Total time taken: ", batch_response.request_latency.total_seconds())
+        print("---------------------------------------")
+
+        # Access SLO_INFO information if requested in the test_request
+        if batch_response.batch_slo_info:
+            print(vars(batch_response.batch_slo_info))
+
+        # Get a mapping of name and feature value from the feature values in the response
+        for response in batch_response.batch_response_list:
+            if response:
+                print({k: v.feature_value for k, v in response.feature_values.items()})
+
+    def pytest_sessionfinish(self) -> None:
+        self.client.close()
