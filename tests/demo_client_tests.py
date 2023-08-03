@@ -64,5 +64,22 @@ class TestDemoClient:
             if response:
                 print({k: v.feature_value for k, v in response.feature_values.items()})
 
+    def test_demo_client_get_feature_service_metadata(self) -> None:
+        metadata_response = self.client.get_feature_service_metadata()
+
+        print("")
+        print("--------------------")
+        print("Feature Service Type: ", metadata_response.feature_service_type)
+        print("Input Join Keys: ", metadata_response.input_join_keys)
+        print("Input Request Context Keys: ", metadata_response.input_request_context_keys)
+        print("Feature Values: ", metadata_response.feature_values)
+        print("Output Join Keys: ", metadata_response.output_join_keys)
+
+        # Print the details of each feature in the response
+        print("Input Join Keys:")
+        for key, value in metadata_response.input_join_keys.items():
+            print("Name: ", key)
+            print("Type: ", value.data_type)
+
     def pytest_sessionfinish(self) -> None:
         self.client.close()

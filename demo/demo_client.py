@@ -2,10 +2,12 @@ from datetime import timedelta
 from typing import Final
 
 from tecton_client.requests import GetFeaturesBatchRequest
+from tecton_client.requests import GetFeatureServiceMetadataRequest
 from tecton_client.requests import GetFeaturesRequest
 from tecton_client.requests import GetFeaturesRequestData
 from tecton_client.requests import MetadataOptions
 from tecton_client.responses import GetFeaturesBatchResponse
+from tecton_client.responses import GetFeatureServiceMetadataResponse
 from tecton_client.responses import GetFeaturesResponse
 from tecton_client.tecton_client import TectonClient
 
@@ -57,6 +59,18 @@ class DemoClient:
         try:
             # Use the Tecton Client get_features() function to send the test_request to the API and get a response
             response = self.tecton_client.get_features_batch(request)
+        except Exception as e:
+            # Add exception handling logic here
+            raise e
+
+        return response
+
+    def get_feature_service_metadata(self) -> GetFeatureServiceMetadataResponse:
+        try:
+            # Use the Tecton Client get_feature_service_metadata() function to get a response from the API
+            response = self.tecton_client.get_feature_service_metadata(
+                GetFeatureServiceMetadataRequest(self.feature_service_name, self.workspace_name)
+            )
         except Exception as e:
             # Add exception handling logic here
             raise e
