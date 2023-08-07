@@ -40,6 +40,7 @@ class DemoClient:
 
         return response
 
+
     def get_features_batch(self, join_key_map: dict, request_context_map: dict) -> GetFeaturesBatchResponse:
         request_data = GetFeaturesRequestData(join_key_map, request_context_map)
 

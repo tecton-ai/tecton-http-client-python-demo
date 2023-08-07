@@ -3,7 +3,6 @@ from typing import Final
 
 from demo.demo_client import DemoClient
 
-
 class TestDemoClient:
     url: Final[str] = "https://app.tecton.ai"
     api_key: Final[str] = os.getenv("TECTON_API_KEY")
