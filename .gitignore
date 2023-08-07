@@ -1,0 +1,10 @@
+# PyCharm and MAC files
+.DS_Store
+.idea/
+
+# Python compiled byte-code files
+.pytest_cache/
+__pycache__/
+
+build/
+demo.egg-info/
