@@ -64,6 +64,7 @@ class TestDemoClient:
             if response:
                 print({k: v.feature_value for k, v in response.feature_values.items()})
 
+
     def test_demo_client_get_feature_service_metadata(self) -> None:
         metadata_response = self.client.get_feature_service_metadata()
 
