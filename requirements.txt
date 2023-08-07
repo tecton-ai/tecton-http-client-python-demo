@@ -1,1 +1,1 @@
-tecton-client~=0.1.0b0
+tecton-client~=0.1.0b1
